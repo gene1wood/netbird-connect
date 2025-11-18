@@ -42,8 +42,8 @@ runs:
       run: >
         set -x
         
-        mkdir netbird-installer
-        
+        ls -al netbird-installer
+
         curl --fail --no-progress-meter --location
         --etag-save netbird-installer/etag.txt --etag-compare netbird-installer/etag.txt
         --output netbird-installer/install.sh
