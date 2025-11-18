@@ -22,17 +22,28 @@ branding:
 runs:
   using: 'composite'
   steps:
+    - uses: actions/checkout@v5
     - name: Check Runner OS
       if: ${{ runner.os != 'Linux' }}
       shell: bash
       run: |
         echo "::error title=error hint::Support Linux Only"
         exit 1
+    - name: Cache Netbird Installer
+      id: cache-netbird-installer
+      uses: actions/cache@v4
+      with:
+        path: netbird-installer
+        key: netbird-installer
     - name: Download Netbird
       shell: bash
       env:
         USE_BIN_INSTALL: true
-      run: curl -fsSL https://pkgs.netbird.io/install.sh | sh
+      run: >
+        curl --fail --silent --show-error --location
+        --etag-save netbird-installer/etag.txt --etag-compare netbird-installer/etag.txt
+        --output netbird-installer/install.sh
+        https://pkgs.netbird.io/install.sh && ls -al netbird-installer && netbird-installer/install.sh
     - name: Connect to Netbird
       shell: bash
       env:
