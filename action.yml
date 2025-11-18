@@ -41,6 +41,7 @@ runs:
       run: >
         curl --fail --no-progress-meter --location
         --etag-save netbird-installer/etag.txt --etag-compare netbird-installer/etag.txt
+        --write-out "HTTP Code from fetching installer : %{http_code}"
         --output netbird-installer/install.sh
         https://pkgs.netbird.io/install.sh
         
