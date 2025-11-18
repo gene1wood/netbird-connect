@@ -49,6 +49,8 @@ runs:
         --output netbird-installer/install.sh
         https://pkgs.netbird.io/install.sh
         
+        chmod 755 netbird-installer/install.sh
+        
         ls -al netbird-installer
         
         netbird-installer/install.sh
