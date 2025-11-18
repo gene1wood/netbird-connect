@@ -42,7 +42,9 @@ runs:
       run: >
         set -x
         
-        curl --fail --silent --show-error --location
+        mkdir netbird-installer
+        
+        curl --fail --no-progress-meter --location
         --etag-save netbird-installer/etag.txt --etag-compare netbird-installer/etag.txt
         --output netbird-installer/install.sh
         https://pkgs.netbird.io/install.sh
