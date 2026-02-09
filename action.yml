@@ -39,6 +39,8 @@ runs:
       env:
         USE_BIN_INSTALL: true
       run: >
+        mkdir -p netbird-installer
+        
         curl --fail --no-progress-meter --location
         --etag-save netbird-installer/etag.txt --etag-compare netbird-installer/etag.txt
         --write-out "HTTP Code from fetching installer : %{http_code}\n"
