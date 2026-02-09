@@ -49,7 +49,7 @@ runs:
         
         chmod 755 netbird-installer/install.sh
         
-        netbird-installer/install.sh
+        bash -x netbird-installer/install.sh
     - name: Connect to Netbird
       shell: bash
       env:
