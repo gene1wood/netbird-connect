@@ -30,7 +30,7 @@ runs:
         exit 1
     - name: Cache Netbird Installer
       id: cache-netbird-installer
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: netbird-installer
         key: netbird-installer
@@ -39,6 +39,8 @@ runs:
       env:
         USE_BIN_INSTALL: true
       run: >
+        set -x
+
         mkdir -p netbird-installer
         
         curl --fail --no-progress-meter --location
@@ -58,14 +60,17 @@ runs:
         HOSTNAME: ${{ inputs.hostname }}
         MANAGEMENT_URL: ${{ inputs.management-url }}
       run: |
-        if [ -z "${HOSTNAME}" ]; then
-          HOSTNAME="github-$(cat /etc/hostname)"
-        fi
-        sudo netbird up --setup-key=${SETUP_KEY} --hostname=${HOSTNAME} --management-url=${MANAGEMENT_URL} ${ADDITIONAL_ARGS}
+        set -x
+        netbird up --setup-key=${SETUP_KEY} --hostname="${HOSTNAME:-github-$(cat /etc/hostname)}" --management-url=${MANAGEMENT_URL} ${ADDITIONAL_ARGS}
     - name: Wait for Netbird to connect
       shell: bash
       run: |
-          while [ -z "$(sudo netbird status | grep 'Management: Connected')" ]; do
-          echo "Waiting for Netbird to connect..."
-          sleep 5
+          set -x
+          while true; do
+            netbird_status=$(netbird status)
+            if echo "$netbird_status" | grep -q 'Management: Connected'; then
+              break
+            fi
+            echo "Waiting for Netbird to connect..."
+            sleep 5
           done

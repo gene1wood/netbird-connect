@@ -1,4 +1,4 @@
-name: netbird-connect
+name: netbird-connect connection test
 
 on:
   push:
@@ -10,11 +10,11 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  connection-test:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v6
 
       - name: Netbird Action
         uses: ./
@@ -22,5 +22,6 @@ jobs:
           setup-key: ${{ secrets.NB_SETUP_KEY }}
 
       - name: Check for connection status
-        run:
+        run: |
+          set -x
           netbird status
